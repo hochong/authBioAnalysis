@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+  </script>
+
+ <script>
+
+    function postReq(){
+      $.post("http://localhost:12345",
+      {
+        classifierSelection: "default",
+        classifierList: [],
+        inputDataSelection: "default",
+        InputDataList: []
+      },
+      function(data,status){
+        alert("Data: " + data + "\nStatus: " + status);
+      });
+    }
+    function displayClassifierSelection(){
+      var checkBox = document.getElementById("customClassifier");
+      var displayDiv = document.getElementById("classifierSelection");
+      var displayDetail = document.getElementById("displaySelection1");
+      if (checkBox.checked){
+        displayDiv.style.display="block";
+        displayDetail.innerHTML="Custom Classifier chosen<br>";
+        var dtcCheckbox = document.getElementById("decisionTreeClassifier");
+        var svmCheckbox = document.getElementById("svmClassifier");
+        if (dtcCheckbox.checked)
+          displayDetail.innerHTML+="Decision Tree Classifier chosen<br>";
+        if (svmCheckbox.checked)
+          displayDetail.innerHTML+="SVM Classifier chosen<br>";
+      } else {
+        displayDiv.style.display="none";
+        displayDetail.innerHTML="Default Classifier chosen<br>";
+      }
+    }
+    function displayInputSelection(){
+      var checkBox = document.getElementById("customInput");
+      var displayDiv = document.getElementById("InputSelection");
+      var displayDetail = document.getElementById("displaySelection2");
+      if (checkBox.checked){
+        displayDiv.style.display="block";
+        displayDetail.innerHTML="Custom input chosen<br>";
+        var x1 = (document.getElementById("x1customInput").value) || "";
+        var x2 = (document.getElementById("x2customInput").value) || "";
+        displayDetail.innerHTML+=x1.value+" "+x2.value;
+
+      } else {
+        displayDiv.style.display="none";
+        displayDetail.innerHTML="Default Input(redTeam.txt) chosen<br>";
+      }
+    }
+
+    function startFunction(){
+      displayClassifierSelection();
+      displayInputSelection();
+    }
+
+    function sendData(){
+      var cSelection = "default";
+      var cList = [];
+      var dSelection ="default";
+      var dList = [];
+      var cCheckBox = document.getElementById("customClassifier");
+      var iCheckBox = document.getElementById("customInput");
+      if (cCheckBox.checked){
+        cSelection = "custom";
+        if(document.getElementById("decisionTreeClassifier").checked){
+          cList.push("decisionTree");
+        }
+        if(document.getElementById("svmClassifier").checked){
+          cList.push("svm");
+        }
+
+        if (cList.length ==0){
+          alert("must select at least one classifier");
+          return;
+        }
+      }
+      if (iCheckBox.checked){
+        var x1 = (document.getElementById("x1customInput").value) || "";
+        var x2 = (document.getElementById("x2customInput").value) || "";
+        if (x1=="" || x2==""){
+          alert("x1 and x2 input must not be empty");
+          return;
+        }
+        dList.push(x1);
+        dList.push(x2);
+      }
+      $.post("http://localhost:12345",
+      JSON.stringify({
+        "classifierSelection": cSelection,
+        "classifierList": cList,
+        "inputDataSelection": dSelection,
+        "InputDataList": dList
+      }),
+      function(data,status){
+        alert("Data: " + data + "\nStatus: " + status);
+      });
+    }
+
+
+
+  </script>
+
+</head>
+<body onload="startFunction()">
+
+<h1>Webpage</h1>
+<button onclick="getReq()">GET</button>
+<button onclick="postReq()">POST</button>
+<br>
+-------------------------------------------
+<br>
+<label class="selectClassifier" onclick="displayClassifierSelection()">
+  <h1>Select Trained Classifier</h1>
+<input type="radio" id="defaultClassifier" name="radioClassifier" checked="checked" > <label>Use Default Classifier</label></input><br>
+<input type="radio" id="customClassifier" name="radioClassifier" > <label>Use Custom Classifier</label></input><br>
+  <div id="classifierSelection" hidden>
+    <input type="checkbox" id="decisionTreeClassifier" name="customClassifier" value="decisionTreeClassifier"/><label> Decision Tree</label><br>
+    <input type="checkbox" id="svmClassifier" name="customClassifier" value="svmClassifier"/><label>SVM</label><br>
+  </div>
+</label>
+
+
+<br>
+-------------------------------------------
+<br>
+
+<label class="selectInput" onchange="displayInputSelection()">
+  <h1>Select Input data</h1>
+<input type="radio" id="defaultInput" name="radioInput" checked="checked" > <label>Use Default Input(readTeam.txt)</label></input><br>
+<input type="radio" id="customInput" name="radioInput" > <label>Use Custom Input</label></input><br>
+  <div id="InputSelection" hidden>
+    <label> x1(source): </label><dd><input type="text" id="x1customInput" placeholder="U123"/></dd><br>
+    <label> x2(destination):</label><dd><input type="text" id="x2customInput" placeholder="C456"/></dd><br>
+  </div>
+</label>
+
+
+<br>
+-------------------------------------------
+<br>
+<button onclick="sendData()">Run</button>
+<br>
+<div id="displayDataSent">
+</div>
+-------------------------------------------
+<br>
+<div id="displaySelection1">
+
+</div>
+<div id="displaySelection2">
+
+</div>
+</body>
+
+
+</html>
