@@ -4,6 +4,8 @@ import json
 import numpy as np
 import pickle
 from utility.mapData import mapUser
+from utility.readCsvFile import readRedTeam
+
 PORT = 12345
 
 
@@ -31,38 +33,41 @@ def handlePost(classifierSelection="Default", classifierList=[], inputDataSelect
         print("error in loading classifier")
         return result, "error in loading classifier"
 
-
-
     #load data red team or use user input rightaway
     if inputDataSelection =="Default":
         #load Red team data
-        inputDataList = ['C123', 'C456']
+        testfile="data/redteam.txt"
+        dataList, maplist = readRedTeam(testfile, maplist)
+        inputDataList = np.array(dataList)[:,:2]
     else:
-        inputDataList = [inputDataList]
+        templist = []
+        templist, maplist = mapData(maplist, inputDataList)
+        inputDataList = [templist]
+        #print(inputDataList)
     #fit and get result
-#    try:
-    for data in inputDataList:
-        tempresult = []
-        d, maplist = mapData(maplist, data)
-        for clf in clfList:
-            r = clf.predict([d])
-            #turn result to 0/1
-            if r > resultThreshold:
-                tempresult.append(1)
-            else:
-                tempresult.append(0)
-        print(tempresult)
+    try:
+        for data in inputDataList:
+            tempresult = []
 
-        #coutFalse
-        # if > voteThreshold is 1(failure)
-        if tempresult.count(1)/len(tempresult) >= voteThreshold:
-            result.append(1)
-        else:
-            result.append(0)
-    print(result)
-#    except:
-#        print("error in predicting result")
-#        return result, "error in predicting result"
+            for clf in clfList:
+                r = clf.predict([data])
+                #turn result to 0/1
+                if r > resultThreshold:
+                    tempresult.append(1)
+                else:
+                    tempresult.append(0)
+            print(tempresult)
+
+            #coutFalse
+            # if > voteThreshold is 1(failure)
+            if tempresult.count(1)/len(tempresult) >= voteThreshold:
+                result.append(1)
+            else:
+                result.append(0)
+        #print(result)
+    except:
+        print("error in predicting result")
+        return result, "error in predicting result"
 
     return result, err
 
@@ -117,9 +122,12 @@ class serverResponseHandler(http.server.BaseHTTPRequestHandler):
         if (e is None):
             #TODO: send back JSON code
             #self.wfile.write(json.dumps(r.encode('utf-8')))
-            self.wfile.write(json.dumps(r))
+            sendData={
+                "result": r
+            }
+            self.wfile.write(json.dumps(r).encode())
         else:
-            self.wfile.write(json.dumps(e.encode('utf-8')))
+            self.wfile.write(json.dumps(e).encode())
 
 with socketserver.TCPServer(("", PORT), serverResponseHandler) as httpd:
     print("serving at port", PORT)

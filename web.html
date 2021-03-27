@@ -65,7 +65,7 @@
         displayDetail.innerHTML="Custom input chosen<br>";
         var x1 = (document.getElementById("x1customInput").value) || "";
         var x2 = (document.getElementById("x2customInput").value) || "";
-        displayDetail.innerHTML+=x1.value+" "+x2.value;
+        displayDetail.innerHTML+=x1+" "+x2;
 
       } else {
         displayDiv.style.display="none";
@@ -79,9 +79,9 @@
     }
 
     function sendData(){
-      var cSelection = "default";
+      var cSelection = "Default";
       var cList = [];
-      var dSelection ="default";
+      var dSelection ="Default";
       var dList = [];
       var cCheckBox = document.getElementById("customClassifier");
       var iCheckBox = document.getElementById("customInput");
@@ -124,6 +124,7 @@
           alert("x1 and x2 input must not be empty");
           return;
         }
+        dSelection="custom";
         dList.push(x1);
         dList.push(x2);
       }
@@ -135,7 +136,18 @@
         "inputDataList": dList
       }),
       function(data,status){
-        alert("Data: " + data + "\nStatus: " + status);
+        var json = JSON.parse(data);
+        console.log(json);
+        var arrayLength = json.length;
+        var normalCount = 0;
+        for (var i =0; i< arrayLength; i++){
+          console.log(json[i]);
+          if (json[i]==1)
+            normalCount++;
+        }
+        var displaytext = "<br>Status: " + status+"<br>"+arrayLength+" result received<br> With "+normalCount+" normal authentication identified<br> And "+(arrayLength-normalCount)+" malicious authentication identified";
+        console.log(displaytext)
+        document.getElementById("displayDataSent").innerHTML=displaytext;
       });
     }
 
@@ -147,8 +159,7 @@
 <body onload="startFunction()">
 
 <h1>Webpage</h1>
-<button onclick="getReq()">GET</button>
-<button onclick="postReq()">POST</button>
+
 <br>
 -------------------------------------------
 <br>
@@ -190,6 +201,7 @@
 <button onclick="sendData()">Run</button>
 <br>
 <div id="displayDataSent">
+  Result will be shown here.
 </div>
 -------------------------------------------
 <br>
