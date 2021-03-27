@@ -13,7 +13,7 @@
         classifierSelection: "default",
         classifierList: [],
         inputDataSelection: "default",
-        InputDataList: []
+        inputDataList: []
       },
       function(data,status){
         alert("Data: " + data + "\nStatus: " + status);
@@ -28,10 +28,29 @@
         displayDetail.innerHTML="Custom Classifier chosen<br>";
         var dtcCheckbox = document.getElementById("decisionTreeClassifier");
         var svmCheckbox = document.getElementById("svmClassifier");
+        var KNNDefaultCheckbox = document.getElementById("KNNDefaultClassifier");
+        var KNNBestParamCheckbox = document.getElementById("KNNBestParamClassifier");
+        var MLPDefaultCheckbox = document.getElementById("MLPDefault");
+        var CNBDefaultCheckbox = document.getElementById("CNBDefault");
+        var NBDefaultCheckbox = document.getElementById("NBDefault");
+        var MNBDefaultCheckbox = document.getElementById("MNBDefault");
+
         if (dtcCheckbox.checked)
           displayDetail.innerHTML+="Decision Tree Classifier chosen<br>";
         if (svmCheckbox.checked)
           displayDetail.innerHTML+="SVM Classifier chosen<br>";
+        if (KNNDefaultCheckbox.checked)
+          displayDetail.innerHTML+="KNN default parameter Classifier chosen<br>";
+        if (KNNBestParamCheckbox.checked)
+          displayDetail.innerHTML+="KNN best parameter Classifier chosen<br>";
+        if (MLPDefaultCheckbox.checked)
+          displayDetail.innerHTML+="MultiLayerPereptron Classifier chosen<br>";
+        if (CNBDefaultCheckbox.checked)
+          displayDetail.innerHTML+="Complement Naive Bayes Classifier chosen<br>";
+        if (NBDefaultCheckbox.checked)
+          displayDetail.innerHTML+="Naive Bayes Classifier chosen<br>";
+        if (MNBDefaultCheckbox.checked)
+          displayDetail.innerHTML+="Multinomial Naive Bayes Classifier chosen<br>";
       } else {
         displayDiv.style.display="none";
         displayDetail.innerHTML="Default Classifier chosen<br>";
@@ -69,10 +88,28 @@
       if (cCheckBox.checked){
         cSelection = "custom";
         if(document.getElementById("decisionTreeClassifier").checked){
-          cList.push("decisionTree");
+          cList.push("DecisionTreeDefault");
         }
         if(document.getElementById("svmClassifier").checked){
-          cList.push("svm");
+          cList.push("SVMDefault");
+        }
+        if(document.getElementById("KNNDefaultClassifier").checked){
+          cList.push("KNNDefault");
+        }
+        if(document.getElementById("KNNBestParamClassifier").checked){
+          cList.push("KNNBestParam");
+        }
+        if(document.getElementById("MLPDefault").checked){
+          cList.push("MLPDefault");
+        }
+        if(document.getElementById("CNBDefault").checked){
+          cList.push("CNBDefault");
+        }
+        if(document.getElementById("NBDefault").checked){
+          cList.push("NBDefault");
+        }
+        if(document.getElementById("MNBDefault").checked){
+          cList.push("MNBDefault");
         }
 
         if (cList.length ==0){
@@ -95,7 +132,7 @@
         "classifierSelection": cSelection,
         "classifierList": cList,
         "inputDataSelection": dSelection,
-        "InputDataList": dList
+        "inputDataList": dList
       }),
       function(data,status){
         alert("Data: " + data + "\nStatus: " + status);
@@ -122,6 +159,12 @@
   <div id="classifierSelection" hidden>
     <input type="checkbox" id="decisionTreeClassifier" name="customClassifier" value="decisionTreeClassifier"/><label> Decision Tree</label><br>
     <input type="checkbox" id="svmClassifier" name="customClassifier" value="svmClassifier"/><label>SVM</label><br>
+    <input type="checkbox" id="KNNDefaultClassifier" name="customClassifier" value="KNNDefaultClassifier"/><label>KNNDefault</label><br>
+    <input type="checkbox" id="KNNBestParamClassifier" name="customClassifier" value="KNNBestParamClassifier"/><label>KNNBestParam</label><br>
+    <input type="checkbox" id="MLPDefault" name="customClassifier" value="MLPDefault"/><label>MultiLayerPerceptron</label><br>
+    <input type="checkbox" id="CNBDefault" name="customClassifier" value="CNBDefault"/><label>Complement Naive Bayes</label><br>
+    <input type="checkbox" id="NBDefault" name="customClassifier" value="NBDefault"/><label>Naive Bayes</label><br>
+    <input type="checkbox" id="MNBDefault" name="customClassifier" value="MNBDefault"/><label>Multinomial Naive Bayes</label><br>
   </div>
 </label>
 
