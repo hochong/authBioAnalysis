@@ -23,7 +23,7 @@ def openCSVFile(filename, mapUserComputerList):
             if (row[3] != "?" and row[4] != "?" and row[8] != "?"):
                 d, mapUserComputerList = mapUser(row[3], mapUserComputerList)
                 data.append(d)#assign int to different users/computers
-                d, mapUserComputerList = mapUser(row[3], mapUserComputerList)
+                d, mapUserComputerList = mapUser(row[4], mapUserComputerList)
                 data.append(d)
                 r, _ = mapResult(row[8])
                 data.append(r)#turn success to 0 and fail to 1
