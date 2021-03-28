@@ -122,9 +122,6 @@ class serverResponseHandler(http.server.BaseHTTPRequestHandler):
         if (e is None):
             #TODO: send back JSON code
             #self.wfile.write(json.dumps(r.encode('utf-8')))
-            sendData={
-                "result": r
-            }
             self.wfile.write(json.dumps(r).encode())
         else:
             self.wfile.write(json.dumps(e).encode())
