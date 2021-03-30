@@ -142,7 +142,7 @@
         var normalCount = 0;
         for (var i =0; i< arrayLength; i++){
           console.log(json[i]);
-          if (json[i]==1)
+          if (json[i]==0)
             normalCount++;
         }
         var displaytext = "<br>Status: " + status+"<br>"+arrayLength+" result received<br> With "+normalCount+" normal authentication identified<br> And "+(arrayLength-normalCount)+" malicious authentication identified";
