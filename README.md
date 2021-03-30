@@ -46,13 +46,7 @@ each sub files with 3000 lines(for example)
 >python3 httpserver.py
 
 ## citation
+Using data from:
 A. D. Kent, “Comprehensive, Multi-Source Cybersecurity Events,”
 Los Alamos National Laboratory, http://dx.doi.org/10.17021/1179829, 2015.
 
-@Misc{kent-2015-cyberdata1,
-  author =     {Alexander D. Kent},
-  title =      {{Comprehensive, Multi-Source Cyber-Security Events}},
-  year =       {2015},
-  howpublished = {Los Alamos National Laboratory},
-  doi = {10.17021/1179829}
-}
